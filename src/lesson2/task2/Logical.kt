@@ -33,7 +33,7 @@ fun isNumberHappy(number: Int): Boolean{
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean  {
-    if (x1==x2||y1==y2||(x1/y1)==(x2/y2)||Math.abs(x2-x1)==Math.abs(y2-y1)) return true
+    if (x1==x2||y1==y2||Math.abs(x2-x1)==Math.abs(y2-y1)) return true
     return false
 }
 
@@ -59,4 +59,22 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    val min1=Math.min(Math.min(a,b),c)
+    val max=Math.max(Math.max(a,b),c)
+    val min2=Math.min(r,s)
+    val med:Int
+    val max2:Int
+    if (min1==a&&max==b) med=c
+    else if (min1==a&&max==c) med=b
+    else if (min1==b&&max==c) med=a
+    else if (min1==b&&max==a) med=c
+    else if (min1==c&&max==b) med=a
+    else med=b
+    if (min2==r) max2=s
+    else max2=r
+    if (min1<=min2&&med<=max2) return true
+    else return false
+
+
+}

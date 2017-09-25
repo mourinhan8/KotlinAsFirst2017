@@ -72,9 +72,11 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    if ((kingX==rookX1&&kingY!=rookY1)||(kingY==rookY1&&kingX!=rookX1)) return 1
-    else if ((kingX==rookX2&&kingY!=rookY2)||(kingY==rookY2&&kingX!=rookX2)) return 2
-    else if((kingX==rookX1&&kingX==rookX2||(kingX==rookX1&&kingY==rookY2)||(kingX==rookX2&&kingY==rookY1)||(kingY==rookY1&&kingY==rookY2))) return 3
+    if ((kingX==rookX1&&kingX==rookX2||(kingX==rookX1&&kingY==rookY2)||(kingX==rookX2&&kingY==rookY1)||(kingY==rookY1&&kingY==rookY2))) return 3
+    else
+        if (kingX==rookX1||kingY==rookY1) return 1
+    else
+            if (kingX==rookX2||kingY==rookY2) return 2
     else return 0}
 
 /**
@@ -89,7 +91,14 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int {
+    if ((kingX==rookX&&kingY!=rookY)||(kingY==rookY&&kingX!=rookX)&&(Math.abs(kingX-bishopX)==Math.abs(kingY-bishopY))) return 3
+    else
+        if ((kingX==rookX&&kingY!=rookY)||(kingY==rookY&&kingX!=rookX)) return 1
+    else
+            if(Math.abs(kingX-bishopX)==Math.abs(kingY-bishopY)) return 2
+    else return 0
+}
 
 /**
  * Простая
