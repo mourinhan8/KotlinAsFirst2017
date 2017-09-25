@@ -37,7 +37,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
 fun ageDescription(age: Int): String {
     if ((age in 5..20)||(age in 105..120)) return "$age лет"
     if (age%10==1) return "$age год"
-    if (age%10>=5) return "$age лет"
+    if (age%10>=5||age%10==0) return "$age лет"
     return "$age года"
 }
 
@@ -135,8 +135,9 @@ return -1}
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if (c>b||d>a) return -1
+    if (c>b||d<a) return -1
     if  (c <= a && d >= b) return b-a
-    if (c>=a||d<=b) return d-c
-    return Math.abs((b-a) - (d-c))
+    if (c>=a&&d<=b) return d-c
+    if (c>=a&&c<=b&&b<=d) return b-c
+    return d-a
 }
