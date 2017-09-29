@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import jdk.nashorn.internal.ir.WhileNode
 import lesson1.task1.sqr
 import kotlin.coroutines.experimental.buildIterator
 
@@ -160,8 +161,8 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var k:Double
-    var q:Double
+    var k: Double
+    var q: Double
     var result = true
     val x = Math.sqrt(m * 1.0).toInt()
     val y = Math.sqrt(n * 1.0).toInt()
@@ -181,7 +182,27 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var s: Double
+    var s1 = 1.0
+    var a = x
+    var i = 1
+    while (a > 0 && a >= 2 * Math.PI) {
+        a = a - 2 * Math.PI
+    }
+    while (a < 0 && a <= -2 * Math.PI) {
+        a = a + 2 * Math.PI
+    }
+    var t = a
+    s = a
+    while (Math.abs(s / s1) > Math.abs(eps)) {
+        s = s * t * t * (-1)
+        s1 = s1 * (i + 1) * (i + 2)
+        a = a + s / s1
+        i = i + 2
+    }
+    return a
+}
 
 /**
  * Средняя
@@ -198,7 +219,17 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Поменять порядок цифр заданного числа n на обратный: 13478 -> 87431.
  * Не использовать строки при решении задачи.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var e = n
+    var s = 0
+    var t: Int
+    while (e != 0) {
+        t = e % 10
+        s = s * 10 + t
+        e = e / 10
+    }
+    return s
+}
 
 /**
  * Средняя
@@ -207,7 +238,18 @@ fun revert(n: Int): Int = TODO()
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    var e = n
+    var s = 0
+    var t = 0
+    while (e != 0) {
+        t = e % 10
+        s = s * 10 + t
+        e = e / 10
+    }
+    if (s == n) return true
+    else return false
+}
 
 /**
  * Средняя
@@ -224,7 +266,18 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var k=0
+    var t=0
+    var x=0
+    while (k<n) {
+        t+=1
+        x=t*t
+        k= k + digitNumber(x)
+    }
+    for (i in 1..k-n){x=x/10}
+    return x%10
+}
 
 /**
  * Сложная
@@ -233,4 +286,21 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var k = 2
+    var fn = 0
+    var i=1
+    var x=1
+        while (k < n) {
+            k = k + digitNumber(fib(i))
+            fn= fib(i)
+            i++
+        }
+        while (x < k - n + 1) {
+            fn / 10
+            x++
+        }
+        return fn % 10
+    }
+
+
