@@ -24,7 +24,7 @@ fun isNumberHappy(number: Int): Boolean {
     val c = (number / 10) % 10
     val d = (number % 10)
     if (a + b == c + d) return true
-    return false
+    else return false
 }
 
 /**
@@ -36,7 +36,7 @@ fun isNumberHappy(number: Int): Boolean {
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
     if (x1 == x2 || y1 == y2 || Math.abs(x2 - x1) == Math.abs(y2 - y1)) return true
-    return false
+    else return false
 }
 
 /**
@@ -50,7 +50,7 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
                  x2: Double, y2: Double, r2: Double): Boolean {
     val d = Math.sqrt(sqr(x1 - x2) + sqr(y1 - y2))
     if (d + r1 <= r2) return true
-    return false
+    else return false
 }
 
 /**
@@ -63,9 +63,9 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    val min1 = Math.min(Math.min(a, b), c)
-    val max = Math.max(Math.max(a, b), c)
-    val min2 = Math.min(r, s)
+    val min1 = minOf(a, b, c)
+    val max = minOf(a, b, c)
+    val min2 = minOf(r, s)
     val med: Int
     val max2: Int
     if (min1 == a && max == b) med = c

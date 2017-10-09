@@ -292,7 +292,7 @@ fun fibSequenceDigit(n: Int): Int {
     var k = 0
     var fn = 0
     var i = 1
-    var t = 0
+    var t : Int
     while (k < n) {
         k = k + digitNumber(fib(i))
         fn = fib(i)
