@@ -265,7 +265,15 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var j=0
+    var k=0.0
+    for (i in digits.size-1 downTo 0){
+        k+=digits[i]*pow(base*1.0,j*1.0)
+        j+=1
+    }
+    return k.toInt()
+}
 
 /**
  * Сложная
@@ -280,14 +288,15 @@ fun decimalFromString(str: String, base: Int): Int {
     var listch = str.toCharArray()
     var listint = mutableListOf<Int>()
     var av = 0.0
-    var j=0.0
-    for (i in 0..listch.size-1) {
-        if (listch[i].toInt() >= 97) {listint.add(listch[i].toInt()-87)}
-        else listint.add(listch[i].toInt()-48)
+    var j = 0.0
+    for (i in 0..listch.size - 1) {
+        if (listch[i].toInt() >= 97) {
+            listint.add(listch[i].toInt() - 87)
+        } else listint.add(listch[i].toInt() - 48)
     }
-    for (i in listint.size-1 downTo 0){
-        av += listint[i] * pow(base*1.0,j)
-        j=j+1
+    for (i in listint.size - 1 downTo 0) {
+        av += listint[i] * pow(base * 1.0, j)
+        j = j + 1
     }
     return av.toInt()
 }
