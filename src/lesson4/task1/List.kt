@@ -247,14 +247,14 @@ fun factorizeToString(n: Int): String {
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    if (n==0) return listOf(0)
-    var k=n
-    var t:Int
-    var m= mutableListOf<Int>()
-    while (k>0){
-        t=k%base
+    if (n == 0) return listOf(0)
+    var k = n
+    var t: Int
+    var m = mutableListOf<Int>()
+    while (k > 0) {
+        t = k % base
         m.add(t)
-        k/=base
+        k /= base
     }
     return m.reversed()
 }
@@ -287,11 +287,11 @@ fun convertToString(n: Int, base: Int): String {
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
 fun decimal(digits: List<Int>, base: Int): Int {
-    var j=0
-    var k=0.0
-    for (i in digits.size-1 downTo 0){
-        k+=digits[i]*pow(base*1.0,j*1.0)
-        j+=1
+    var j = 0
+    var k = 0.0
+    for (i in digits.size - 1 downTo 0) {
+        k += digits[i] * pow(base * 1.0, j * 1.0)
+        j += 1
     }
     return k.toInt()
 }
@@ -322,7 +322,56 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var so = n
+    var st = ""
+    for (i in 1..so / 1000) {
+        st = st + 'M'
+    }
+    so = so % 1000
+    if (so >= 900) {
+        st = st + 'C' + 'M'
+        so = so - 900
+    } else if (so >= 500) {
+        st = st + 'D'
+        so = so - 500
+    } else if (so >= 400) {
+        st = st + 'C' + 'D'
+        so = so - 400
+    }
+    for (i in 1..so / 100) {
+        st = st + 'C'
+    }
+    so = so % 100
+    if (so >= 90) {
+        st = st + 'X' + 'C'
+        so = so - 90
+    } else if (so >= 50) {
+        st = st + 'L'
+        so = so - 50
+    } else if (so >= 40) {
+        st = st + 'X' + 'L'
+        so = so - 40
+    }
+    for (i in 1..so / 10) {
+        st = st + 'X'
+    }
+    so = so % 10
+    if (so >= 9) {
+        st = st + 'I' + 'X'
+        so = so - 9
+    } else if (so >= 5) {
+        st = st + 'V'
+        so = so - 5
+    } else if (so >= 4) {
+        st = st + 'I' + 'V'
+        so = so - 4
+    }
+    for (i in 1..so) {
+        st = st + 'I'
+    }
+    return st
+}
 
 /**
  * Очень сложная
