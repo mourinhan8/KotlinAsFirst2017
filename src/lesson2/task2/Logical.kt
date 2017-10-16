@@ -23,7 +23,7 @@ fun isNumberHappy(number: Int): Boolean {
     val b = (number / 100) % 10
     val c = (number / 10) % 10
     val d = (number % 10)
-    return (a + b == c + d)
+    return a + b == c + d
 }
 
 /**
@@ -34,7 +34,7 @@ fun isNumberHappy(number: Int): Boolean {
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-    return (x1 == x2 || y1 == y2 || Math.abs(x2 - x1) == Math.abs(y2 - y1))
+    return x1 == x2 || y1 == y2 || Math.abs(x2 - x1) == Math.abs(y2 - y1)
 }
 
 /**
@@ -47,7 +47,7 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
 fun circleInside(x1: Double, y1: Double, r1: Double,
                  x2: Double, y2: Double, r2: Double): Boolean {
     val d = Math.sqrt(sqr(x1 - x2) + sqr(y1 - y2))
-    return (d + r1 <= r2)
+    return d + r1 <= r2
 }
 
 /**
@@ -73,5 +73,5 @@ fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     else med = b
     if (min2 == r) max2 = s
     else max2 = r
-    return (min1 <= min2 && med <= max2)
+    return min1 <= min2 && med <= max2
 }

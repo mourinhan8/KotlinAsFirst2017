@@ -246,7 +246,18 @@ fun factorizeToString(n: Int): String {
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    if (n==0) return listOf(0)
+    var k=n
+    var t:Int
+    var m= mutableListOf<Int>()
+    while (k>0){
+        t=k%base
+        m.add(t)
+        k/=base
+    }
+    return m.reversed()
+}
 
 /**
  * Сложная
@@ -256,7 +267,17 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    val sys = convert(n, base)
+    val alphabet = "abcdefghijklmnopqrstuvwxyz"
+    val numb = StringBuilder()
+    for (element in sys) {
+        if (element < 10) numb.append(element.toString())
+        else numb.append(alphabet[element - 10].toString())
+    }
+    return numb.toString()
+}
+
 
 /**
  * Средняя
@@ -285,20 +306,12 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    var listch = str.toCharArray()
-    var listint = mutableListOf<Int>()
-    var av = 0.0
-    var j = 0.0
-    for (i in 0..listch.size - 1) {
-        if (listch[i].toInt() >= 97) {
-            listint.add(listch[i].toInt() - 87)
-        } else listint.add(listch[i].toInt() - 48)
+    val digits = mutableListOf<Int>()
+    for (char in str) {
+        if (char in 'a'..'z') digits.add(char - 'a' + 10)
+        else digits.add(char - '0')
     }
-    for (i in listint.size - 1 downTo 0) {
-        av += listint[i] * pow(base * 1.0, j)
-        j = j + 1
-    }
-    return av.toInt()
+    return decimal(digits, base)
 }
 
 /**
