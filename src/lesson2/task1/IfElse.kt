@@ -111,15 +111,10 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     val max = maxOf(a, b, c)
-    val min = minOf(a, b, c)
-    var med = 0.0
-    if (max == a && min == b) med = c
-    else if (max == a && min == c) med = b
-    else if (max == b && min == a) med = c
-    else if (max == b && min == c) med = a
-    else if (max == c && min == a) med = b
-    else med = a
-    val cos = (sqr(med) + sqr(min) - sqr(max)) / (2 * med * min)
+    var cos = 0.0
+    if (max == a) cos = (sqr(c) + sqr(b) - sqr(a)) / (2 * b * c)
+    if (max == b) cos = (sqr(a) + sqr(c) - sqr(b)) / (2 * a * c)
+    if (max == c) cos = (sqr(a) + sqr(b) - sqr(c)) / (2 * a * b)
     return when {
         (cos == 0.0) -> 1
         (cos > 0.0 && cos < 1.0) -> 0
