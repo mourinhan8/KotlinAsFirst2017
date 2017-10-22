@@ -210,7 +210,7 @@ class Tests {
     @Test
     @Tag("Hard")
     fun fibSequenceDigit() {
-        assertEquals(1, fibSequenceDigit(1))
+        assertEquals(1, fibSequenceDigit(225))
         assertEquals(1, fibSequenceDigit(2))
         assertEquals(3, fibSequenceDigit(4))
         assertEquals(2, fibSequenceDigit(9))

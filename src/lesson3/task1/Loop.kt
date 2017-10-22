@@ -82,10 +82,16 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-
+    var f1 = 1
+    var f2 = 1
+    var fn = 0
     if (n < 3) return 1
-    else return fib(n - 1) + fib(n - 2)
-
+    else for (i in 3..n) {
+        fn = f1 + f2
+        f1 = f2
+        f2 = fn
+    }
+    return fn
 }
 
 /**
@@ -94,15 +100,18 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    var y = 0
-    for (k in 1..n * m) {
-        if (k % m != 0 || k % n != 0) continue
-        y = k
-        if (y % m == 0 || y % n == 0) break
+fun gcd(m: Int, n: Int): Int {
+    var max = maxOf(m, n)
+    var min = minOf(m, n)
+    while (max % min != 0) {
+        val mn = min
+        min = max % min
+        max = mn
     }
-    return y
+    return min
 }
+
+fun lcm(m: Int, n: Int): Int = m * n / gcd(m, n)
 
 /**
  * Простая
@@ -110,13 +119,10 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var k = 0
-    for (i in 2..n) {
-        if (n % i != 0) continue
-        k = i
-        if (n % k == 0) break
+    for (i in 2..n / 2) {
+        if (n % i == 0) return i
     }
-    return k
+    return n
 }
 
 /**
@@ -125,13 +131,10 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var k = 0
     for (i in n / 2 downTo 1) {
-        if (n % 1 != 0) continue
-        k = i
-        if (n % k == 0) break
+        if (n % i == 0) return i
     }
-    return k
+    return 1
 }
 
 /**
@@ -141,17 +144,7 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var result = true
-    val min = Math.min(m, n)
-    val max = Math.max(m, n)
-    if (max % min == 0) return false
-    else for (k in 2..min / 2) {
-        if (m % k != 0 && n % k != 0) result = true
-        else result = false
-    }
-    return result
-}
+fun isCoPrime(m: Int, n: Int): Boolean = gcd(m, n) == 1
 
 /**
  * Простая
@@ -161,18 +154,14 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var k: Double
-    var q: Double
-    var result = true
-    val x = Math.sqrt(m * 1.0).toInt()
-    val y = Math.sqrt(n * 1.0).toInt()
+    val x = Math.sqrt(m.toDouble()).toInt()
+    val y = Math.sqrt(n.toDouble()).toInt()
     for (i in x..y) {
-        k = i.toDouble()
-        q = sqr(k)
-        if (q in m..n) result = true
-        else result = false
+        var k = i.toDouble()
+        var q = sqr(k)
+        if (q in m..n) return true
     }
-    return result
+    return false
 }
 
 /**
@@ -183,25 +172,15 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    var s: Double
-    var s1 = 1.0
-    var a = x
     var i = 1
-    while (a > 0 && a >= 2 * Math.PI) {
-        a = a - 2 * Math.PI
-    }
-    while (a < 0 && a <= -2 * Math.PI) {
-        a = a + 2 * Math.PI
-    }
-    var t = a
-    s = a
-    while (Math.abs(s / s1) > Math.abs(eps)) {
-        s = s * t * t * (-1)
-        s1 = s1 * (i + 1) * (i + 2)
-        a = a + s / s1
-        i = i + 2
-    }
-    return a
+    var sinx = x
+    var e = x
+    do {
+        e = -e * x * x / ((2 * i) * (2 * i + 1))
+        i++
+        sinx = sinx + e
+    } while (Math.abs(e) < eps)
+    return sinx
 }
 
 /**
@@ -211,7 +190,17 @@ fun sin(x: Double, eps: Double): Double {
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var i = 1
+    var cosx = 1.0
+    var e = x
+    do {
+        e = -e * x * x / ((2 * i - 1) * (2 * i))
+        i++
+        cosx = cosx + e
+    } while (Math.abs(e) < eps)
+    return cosx
+}
 
 /**
  * Средняя
@@ -222,9 +211,8 @@ fun cos(x: Double, eps: Double): Double = TODO()
 fun revert(n: Int): Int {
     var e = n
     var s = 0
-    var t: Int
     while (e != 0) {
-        t = e % 10
+        var t = e % 10
         s = s * 10 + t
         e = e / 10
     }
@@ -238,18 +226,7 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean {
-    var e = n
-    var s = 0
-    var t = 0
-    while (e != 0) {
-        t = e % 10
-        s = s * 10 + t
-        e = e / 10
-    }
-    if (s == n) return true
-    else return false
-}
+fun isPalindrome(n: Int): Boolean = revert(n) == n
 
 /**
  * Средняя
@@ -292,7 +269,7 @@ fun fibSequenceDigit(n: Int): Int {
     var k = 0
     var fn = 0
     var i = 1
-    var t : Int
+    var t: Int
     while (k < n) {
         k = k + digitNumber(fib(i))
         fn = fib(i)
