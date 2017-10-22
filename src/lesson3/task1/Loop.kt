@@ -276,8 +276,7 @@ fun fibSequenceDigit(n: Int): Int {
         i++
     }
     for (x in 1..k - n) {
-        t = fn % 10
-        fn = (fn - t) / 10
+        fn = (fn - fn%10) / 10
     }
     return fn % 10
 }
