@@ -251,7 +251,7 @@ fun convertToString(n: Int, base: Int): String {
     var digits = convert(n, base)
     var digitschar = mutableListOf<Char>()
     for (i in digits.indices) {
-        if (digits[i] > 10) digitschar.add('a' + digits[i])
+        if (digits[i] >= 10) digitschar.add('a' + digits[i] - 10)
         else digitschar.add('0' + digits[i])
     }
     return digitschar.joinToString(separator = "")
