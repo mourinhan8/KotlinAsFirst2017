@@ -313,4 +313,74 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian1(n: Int): String {
+    var list1 = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь",
+            "восемь", "девять")
+    var list = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
+            "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+    var list2 = listOf("двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят",
+            "семьдесят", "восемьдесят", "девяносто")
+    var list3 = listOf("сто", "двести", "триста", "четыреста", "пятьсот",
+            "шестьсот", "семьсот", "восемьсот", "девятьсот")
+    var number = n
+    var j = number % 10
+    number = number / 10
+    var k = number % 10
+    var l = number / 10
+    var result = ""
+    if (l > 0) result = result + list3[l - 1]
+    if (k > 0) {
+        if (k != 1) {
+            if (l == 0) result = result + list2[k - 2]
+            else result = result + " " + list2[k - 2]
+            if (j != 0) result = result + " " + list1[j - 1]
+        } else {
+            if (l == 0) result = result + list[j]
+            else result = result + " " + list[j]
+        }
+    } else {
+        if (j > 0 && k > 0) result = result + " " + list1[j - 1]
+        else if (j > 0 && l > 0) result = result + " " + list1[j - 1]
+        else if (j > 0) result = result + list1[j-1]
+    }
+    return result
+}
+
+fun russian(n: Int): String {
+    var z = n % 1000
+    var number = n / 1000
+    var result = ""
+    var list1 = listOf("одна", "две", "три", "четыре", "пять", "шесть", "семь",
+            "восемь", "девять")
+    var list = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
+            "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+    var list2 = listOf("двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят",
+            "семьдесят", "восемьдесят", "девяносто")
+    var list3 = listOf("сто", "двести", "триста", "четыреста", "пятьсот",
+            "шестьсот", "семьсот", "восемьсот", "девятьсот")
+    var j = number % 10
+    var k = (number/10) % 10
+    var l = number / 100
+    if (number == 0) return russian1(z)
+    if (l > 0) result = result + list3[l - 1]
+    if (k > 0) {
+        if (k != 1) {
+            if (l == 0) result = result + list2[k - 2]
+            else result = result + " " + list2[k - 2]
+            if (j != 0) result = result + " " + list1[j - 1]
+        } else {
+            if (l == 0) result = result + list[j]
+            else result = result + " " + list[j]
+        }
+    }
+    else {
+        if (j > 0 && k > 0) result = result + " " + list1[j - 1]
+        else if (j > 0 && l > 0) result = result + " " + list1[j - 1]
+        else if (j > 0) result = result + list1[j-1]
+    }
+    if (number % 10 == 1 && number % 100 != 11) result = result + " " + "тысяча"
+    else if (number % 10 !in 2..4 || number % 100 in 12..14) result = result + " " + "тысяч"
+    else result = result + " " + "тысячи"
+    if (z==0) return result
+    return result + " " + russian1(z)
+}
