@@ -157,8 +157,8 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
     val x = Math.sqrt(m.toDouble()).toInt()
     val y = Math.sqrt(n.toDouble()).toInt()
     for (i in x..y) {
-        var k = i.toDouble()
-        var q = sqr(k)
+        val k = i.toDouble()
+        val q = sqr(k)
         if (q in m..n) return true
     }
     return false
@@ -178,7 +178,7 @@ fun sin(x: Double, eps: Double): Double {
     do {
         e = -e * x * x / ((2 * i) * (2 * i + 1))
         i++
-        sinx = sinx + e
+        sinx += sinx + e
     } while (Math.abs(e) < eps)
     return sinx
 }
@@ -212,7 +212,7 @@ fun revert(n: Int): Int {
     var e = n
     var s = 0
     while (e != 0) {
-        var t = e % 10
+        val t = e % 10
         s = s * 10 + t
         e = e / 10
     }
@@ -248,9 +248,9 @@ fun squareSequenceDigit(n: Int): Int {
     var t = 0
     var x = 0
     while (k < n) {
-        t += 1
+        t++
         x = t * t
-        k = k + digitNumber(x)
+        k += digitNumber(x)
     }
     for (i in 1..k - n) {
         x = x / 10
@@ -271,12 +271,13 @@ fun fibSequenceDigit(n: Int): Int {
     var i = 1
     var t: Int
     while (k < n) {
-        k = k + digitNumber(fib(i))
         fn = fib(i)
+        k = k + digitNumber(fn)
         i++
     }
     for (x in 1..k - n) {
-        fn = (fn - fn%10) / 10
+        t = fn % 10
+        fn = (fn - t) / 10
     }
     return fn % 10
 }

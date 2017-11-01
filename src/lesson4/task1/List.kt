@@ -153,7 +153,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
 fun times(a: List<Double>, b: List<Double>): Double {
     var c = 0.0
     for (i in a.indices) {
-        c = c + a[i] * b[i]
+        c += c + a[i] * b[i]
     }
     return c
 }
@@ -169,7 +169,7 @@ fun times(a: List<Double>, b: List<Double>): Double {
 fun polynom(p: List<Double>, x: Double): Double {
     var s = 0.0
     for (i in p.indices) {
-        s += p[i] * pow(x, i * 1.0)
+        s += p[i] * pow(x, i.toDouble())
     }
     return s
 }
@@ -204,7 +204,7 @@ fun factorize(n: Int): List<Int> {
     var m = mutableListOf<Int>()
     var k = n
     while (k > 1) {
-        var r = minDivisor(k)
+        val r = minDivisor(k)
         m.add(r)
         k /= r
     }
@@ -230,9 +230,9 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     if (n == 0) return listOf(0)
     var k = n
-    var m = mutableListOf<Int>()
+    val m = mutableListOf<Int>()
     while (k > 0) {
-        var t = k % base
+        val t = k % base
         m.add(t)
         k /= base
     }
@@ -249,7 +249,7 @@ fun convert(n: Int, base: Int): List<Int> {
  */
 fun convertToString(n: Int, base: Int): String {
     var digits = convert(n, base)
-    var digitschar = mutableListOf<Char>()
+    val digitschar = mutableListOf<Char>()
     for (i in digits.indices) {
         if (digits[i] >= 10) digitschar.add('a' + digits[i] - 10)
         else digitschar.add('0' + digits[i])
@@ -300,7 +300,7 @@ fun roman(n: Int): String {
     var rom = ""
     while (k > 0) {
         val search = convert.find { k - it.first >= 0 } ?: return ""
-        rom = rom + search.second
+        rom += search.second
         k -= search.first
     }
     return rom
@@ -313,7 +313,7 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian1(n: Int): String {
+fun hundreds(n: Int): String {
     var list1 = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь",
             "восемь", "девять")
     var list = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
@@ -361,7 +361,7 @@ fun russian(n: Int): String {
     var j = number % 10
     var k = (number/10) % 10
     var l = number / 100
-    if (number == 0) return russian1(z)
+    if (number == 0) return hundreds(z)
     if (l > 0) result = result + list3[l - 1]
     if (k > 0) {
         if (k != 1) {
@@ -382,5 +382,5 @@ fun russian(n: Int): String {
     else if (number % 10 !in 2..4 || number % 100 in 12..14) result = result + " " + "тысяч"
     else result = result + " " + "тысячи"
     if (z==0) return result
-    return result + " " + russian1(z)
+    return result + " " + hundreds(z)
 }
