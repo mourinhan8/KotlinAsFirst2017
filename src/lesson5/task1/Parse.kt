@@ -137,7 +137,15 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val list = jumps.filter { it !in "-%" }.split(" ")
+    try {
+        val achiev = list.map { it.toInt() }
+        return achiev.max() ?: -1
+    } catch (e: NumberFormatException) {
+        return -1
+    }
+}
 
 /**
  * Сложная
@@ -149,7 +157,18 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    val list1 = jumps.split(" ")
+    val list2 = mutableListOf<String>()
+    try {
+        for (i in list1.indices) {
+            if ("+" in list1[i]) list2.add(list1[i - 1])
+        }
+        return list2.map { it.toInt() }.max() ?: -1
+    } catch (e: NumberFormatException) {
+        return -1
+    }
+}
 
 /**
  * Сложная
