@@ -5,7 +5,7 @@ package lesson3.task1
 import jdk.nashorn.internal.ir.WhileNode
 import lesson1.task1.sqr
 import kotlin.coroutines.experimental.buildIterator
-
+import java.lang.Math.*
 /**
  * Пример
  *
@@ -173,14 +173,19 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  */
 fun sin(x: Double, eps: Double): Double {
     var i = 1
-    var sinx = x
-    var e = x
-    do {
-        e = -e * x * x / ((2 * i) * (2 * i + 1))
+    var y: Double
+    if (x >= 0) y = x else y = -x
+    while (y >= 2 * PI) {
+        y = y - 2 * PI
+    }
+    var result = y
+    var e = y
+    while (abs(e) < eps) {
+        e = -e * y * y / ((2 * i) * (2 * i + 1))
         i++
-        sinx += sinx + e
-    } while (Math.abs(e) < eps)
-    return sinx
+        result += e
+    }
+    return result
 }
 
 /**
@@ -192,14 +197,19 @@ fun sin(x: Double, eps: Double): Double {
  */
 fun cos(x: Double, eps: Double): Double {
     var i = 1
-    var cosx = 1.0
-    var e = x
-    do {
-        e = -e * x * x / ((2 * i - 1) * (2 * i))
+    var result = 1.0
+    var y : Double
+    if (x >= 0) y = x else y = -x
+    while (y >= 2 * PI) {
+        y = y - 2 * PI
+    }
+    var e = 1.0
+    while (abs(e) < eps) {
+        e = -e * y * y / ((2 * i - 1) * (2 * i))
         i++
-        cosx = cosx + e
-    } while (Math.abs(e) < eps)
-    return cosx
+        result += e
+    }
+    return result
 }
 
 /**
