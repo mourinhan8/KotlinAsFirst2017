@@ -153,7 +153,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
 fun times(a: List<Double>, b: List<Double>): Double {
     var c = 0.0
     for (i in a.indices) {
-        c += c + a[i] * b[i]
+        c += a[i] * b[i]
     }
     return c
 }
@@ -341,7 +341,7 @@ fun hundreds(n: Int): String {
     } else {
         if (j > 0 && k > 0) result = result + " " + list1[j - 1]
         else if (j > 0 && l > 0) result = result + " " + list1[j - 1]
-        else if (j > 0) result = result + list1[j-1]
+        else if (j > 0) result = result + list1[j - 1]
     }
     return result
 }
@@ -359,7 +359,7 @@ fun russian(n: Int): String {
     var list3 = listOf("сто", "двести", "триста", "четыреста", "пятьсот",
             "шестьсот", "семьсот", "восемьсот", "девятьсот")
     var j = number % 10
-    var k = (number/10) % 10
+    var k = (number / 10) % 10
     var l = number / 100
     if (number == 0) return hundreds(z)
     if (l > 0) result = result + list3[l - 1]
@@ -372,15 +372,14 @@ fun russian(n: Int): String {
             if (l == 0) result = result + list[j]
             else result = result + " " + list[j]
         }
-    }
-    else {
+    } else {
         if (j > 0 && k > 0) result = result + " " + list1[j - 1]
         else if (j > 0 && l > 0) result = result + " " + list1[j - 1]
-        else if (j > 0) result = result + list1[j-1]
+        else if (j > 0) result = result + list1[j - 1]
     }
     if (number % 10 == 1 && number % 100 != 11) result = result + " " + "тысяча"
     else if (number % 10 !in 2..4 || number % 100 in 12..14) result = result + " " + "тысяч"
     else result = result + " " + "тысячи"
-    if (z==0) return result
+    if (z == 0) return result
     return result + " " + hundreds(z)
 }
