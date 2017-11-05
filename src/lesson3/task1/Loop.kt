@@ -174,11 +174,10 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  */
 fun sin(x: Double, eps: Double): Double {
     var s1 = 1.0
-    var sinx: Double
+    var sinx = x
     var i = 1
-    if (x >= 0) sinx = x else sinx = -x
-    while (sinx >= 2 * PI) {
-        sinx -= 2 * PI
+    while (abs(sinx) >= 2 * PI) {
+        sinx %= 2 * PI
     }
     val t = sinx
     var s = sinx

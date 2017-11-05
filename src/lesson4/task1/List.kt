@@ -346,8 +346,6 @@ fun russian(n: Int): String {
     val list1 = hundreds(z)
     var result = mutableListOf<String>()
     val j = number % 10
-    val k = number / 10 % 10
-    val l = number / 100
     if (number != 0) {
         result = hundreds(number)
         if (j == 1 && number % 100 != 11) {
@@ -358,7 +356,7 @@ fun russian(n: Int): String {
             result.remove("два")
             result.add("две тысячи")
         }
-        if (j == 3 && j == 4) result.add("тысячи")
+        if (j == 3 || j == 4) result.add("тысячи")
         if (j in 5..9 || j == 0) result.add("тысяч")
         result.addAll(list1)
         return result.joinToString(separator = " ")
