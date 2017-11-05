@@ -6,6 +6,7 @@ import jdk.nashorn.internal.ir.WhileNode
 import lesson1.task1.sqr
 import kotlin.coroutines.experimental.buildIterator
 import java.lang.Math.*
+
 /**
  * Пример
  *
@@ -172,20 +173,22 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
+    var s1 = 1.0
+    var sinx: Double
     var i = 1
-    var y: Double
-    if (x >= 0) y = x else y = -x
-    while (y >= 2 * PI) {
-        y = y - 2 * PI
+    if (x >= 0) sinx = x else sinx = -x
+    while (sinx >= 2 * PI) {
+        sinx -= 2 * PI
     }
-    var result = y
-    var e = y
-    while (abs(e) < eps) {
-        e = -e * y * y / ((2 * i) * (2 * i + 1))
-        i++
-        result += e
+    val t = sinx
+    var s = sinx
+    while (Math.abs(s / s1) > eps) {
+        s = s * t * t * (-1)
+        s1 = s1 * (i + 1) * (i + 2)
+        sinx += s / s1
+        i = i + 2
     }
-    return result
+    return sinx
 }
 
 /**
@@ -196,20 +199,25 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
-    var i = 1
-    var result = 1.0
-    var y : Double
-    if (x >= 0) y = x else y = -x
-    while (y >= 2 * PI) {
-        y = y - 2 * PI
+    var cosx = 1.0
+    var i = 0.0
+    var s1 = 1.0
+    var x1: Double
+    if (x >= 0) {
+        x1 = x
+    } else x1 = -x
+    while (x1 >= 2 * PI) {
+        x1 -= 2 * PI
     }
-    var e = 1.0
-    while (abs(e) < eps) {
-        e = -e * y * y / ((2 * i - 1) * (2 * i))
-        i++
-        result += e
+    var s = 1.0
+    if (x == 0.0) return 1.0
+    while (abs(s / s1) >= eps) {
+        s1 = s1 * (i + 1.0) * (i + 2.0)
+        s = s * x1 * x1 * (-1.0)
+        cosx = cosx + s / s1
+        i = i + 2.0
     }
-    return result
+    return cosx
 }
 
 /**
@@ -279,15 +287,13 @@ fun fibSequenceDigit(n: Int): Int {
     var k = 0
     var fn = 0
     var i = 1
-    var t: Int
     while (k < n) {
         fn = fib(i)
         k = k + digitNumber(fn)
         i++
     }
     for (x in 1..k - n) {
-        t = fn % 10
-        fn = (fn - t) / 10
+        fn = (fn - fn % 10) / 10
     }
     return fn % 10
 }
