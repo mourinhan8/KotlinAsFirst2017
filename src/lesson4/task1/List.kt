@@ -313,73 +313,55 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun hundreds(n: Int): String {
-    var list1 = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь",
+fun hundreds(n: Int): MutableList<String> {
+    val list1 = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь",
             "восемь", "девять")
-    var list = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
+    val list = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
             "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
-    var list2 = listOf("двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят",
+    val list2 = listOf("двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят",
             "семьдесят", "восемьдесят", "девяносто")
-    var list3 = listOf("сто", "двести", "триста", "четыреста", "пятьсот",
+    val list3 = listOf("сто", "двести", "триста", "четыреста", "пятьсот",
             "шестьсот", "семьсот", "восемьсот", "девятьсот")
     var number = n
-    var j = number % 10
+    val j = number % 10
     number = number / 10
-    var k = number % 10
-    var l = number / 10
-    var result = ""
-    if (l > 0) result = result + list3[l - 1]
+    val k = number % 10
+    val l = number / 10
+    val result = mutableListOf<String>()
+    if (l > 0) result.add(list3[l - 1])
     if (k > 0) {
         if (k != 1) {
-            if (l == 0) result = result + list2[k - 2]
-            else result = result + " " + list2[k - 2]
-            if (j != 0) result = result + " " + list1[j - 1]
+            result.add(list2[k - 2])
+            if (j > 0) result.add(list1[j - 1])
         } else {
-            if (l == 0) result = result + list[j]
-            else result = result + " " + list[j]
+            result.add(list[j])
         }
-    } else {
-        if (j > 0 && k > 0) result = result + " " + list1[j - 1]
-        else if (j > 0 && l > 0) result = result + " " + list1[j - 1]
-        else if (j > 0) result = result + list1[j - 1]
-    }
+    } else if (j > 0) result.add(list1[j - 1])
     return result
 }
 
 fun russian(n: Int): String {
-    var z = n % 1000
-    var number = n / 1000
-    var result = ""
-    var list1 = listOf("одна", "две", "три", "четыре", "пять", "шесть", "семь",
-            "восемь", "девять")
-    var list = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
-            "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
-    var list2 = listOf("двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят",
-            "семьдесят", "восемьдесят", "девяносто")
-    var list3 = listOf("сто", "двести", "триста", "четыреста", "пятьсот",
-            "шестьсот", "семьсот", "восемьсот", "девятьсот")
-    var j = number % 10
-    var k = (number / 10) % 10
-    var l = number / 100
-    if (number == 0) return hundreds(z)
-    if (l > 0) result = result + list3[l - 1]
-    if (k > 0) {
-        if (k != 1) {
-            if (l == 0) result = result + list2[k - 2]
-            else result = result + " " + list2[k - 2]
-            if (j != 0) result = result + " " + list1[j - 1]
-        } else {
-            if (l == 0) result = result + list[j]
-            else result = result + " " + list[j]
+    val z = n % 1000
+    val number = n / 1000
+    val list1 = hundreds(z)
+    var result = mutableListOf<String>()
+    val j = number % 10
+    val k = number / 10 % 10
+    val l = number / 100
+    if (number != 0) {
+        result = hundreds(number)
+        if (j == 1 && number % 100 != 11) {
+            result.remove("один")
+            result.add("одна тысяча")
         }
-    } else {
-        if (j > 0 && k > 0) result = result + " " + list1[j - 1]
-        else if (j > 0 && l > 0) result = result + " " + list1[j - 1]
-        else if (j > 0) result = result + list1[j - 1]
+        if (j == 2 && number % 100 != 12) {
+            result.remove("два")
+            result.add("две тысячи")
+        }
+        if (j == 3 && j == 4) result.add("тысячи")
+        if (j in 5..9 || j == 0) result.add("тысяч")
+        result.addAll(list1)
+        return result.joinToString(separator = " ")
     }
-    if (number % 10 == 1 && number % 100 != 11) result = result + " " + "тысяча"
-    else if (number % 10 !in 2..4 || number % 100 in 12..14) result = result + " " + "тысяч"
-    else result = result + " " + "тысячи"
-    if (z == 0) return result
-    return result + " " + hundreds(z)
+    return list1.joinToString(separator = " ")
 }
