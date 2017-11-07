@@ -357,7 +357,7 @@ fun russian(n: Int): String {
             result.add("две тысячи")
         }
         if ((j == 3 || j == 4) && number % 100 != 13 && number % 100 != 14) result.add("тысячи")
-        if (j in 5..9 || j == 0 || number % 100 == 13 || number % 100 == 14) result.add("тысяч")
+        if (j in 5..9 || j == 0 || number % 100 in 11..14) result.add("тысяч")
         result.addAll(list1)
         return result.joinToString(separator = " ")
     }
