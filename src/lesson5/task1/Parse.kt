@@ -138,7 +138,7 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    val list = jumps.filter { it !in "-%" }.split(" ")
+    val list = jumps.split(" ").filter { it !in "-%" }
     try {
         val achiev = list.map { it.toInt() }
         return achiev.max() ?: -1
@@ -179,7 +179,24 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val parts = expression.split(" ")
+    if (parts.size == 0 || parts.size % 2 == 0) throw IllegalArgumentException()
+    try {
+        var result = parts[0].toInt()
+        for (i in 1..parts.size step 2) {
+            val numb = parts[i + 1].toInt()
+            when (parts[i]) {
+                "+" -> result += numb
+                "-" -> result -= numb
+                else -> throw IllegalArgumentException()
+            }
+        }
+        return result
+    } catch (e: NumberFormatException) {
+        throw IllegalArgumentException()
+    }
+}
 
 /**
  * Сложная
