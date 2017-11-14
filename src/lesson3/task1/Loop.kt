@@ -87,7 +87,7 @@ fun fib(n: Int): Int {
     var f2 = 1
     var fn = 0
     if (n < 3) return 1
-    else for (i in 3..n) {
+    for (i in 3..n) {
         fn = f1 + f2
         f1 = f2
         f2 = fn
