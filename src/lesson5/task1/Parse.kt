@@ -140,9 +140,9 @@ fun flattenPhoneNumber(phone: String): String {
 fun bestLongJump(jumps: String): Int {
     val list = jumps.split(" ").filter { it !in "-%" }
     try {
-        val achiev = list.map { it.toInt() }
-        return achiev.max() ?: -1
-    } catch (e: NumberFormatException) {
+        val result = list.map { it.toInt() }
+        return result.max() ?: -1
+    } catch (e: Exception) {
         return -1
     }
 }

@@ -184,7 +184,7 @@ fun lineBySegment(s: Segment): Line = Line(s.begin, Math.atan((s.end.y - s.begin
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = Line(a, Math.atan((a.y - b.y) / (a.x - b.x)))
+fun lineByPoints(a: Point, b: Point): Line = Line(a, Math.atan(abs((a.y - b.y) / (a.x - b.x))))
 
 /**
  * Сложная
