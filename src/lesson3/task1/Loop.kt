@@ -173,18 +173,15 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    var s1 = 1.0
-    var sinx = x
+    var sinx = x%(2* PI)
     var i = 1
-    while (abs(sinx) >= 2 * PI) {
-        sinx %= 2 * PI
-    }
     val t = sinx
-    var s = sinx
-    while (Math.abs(s / s1) > eps) {
-        s = s * t * t * (-1)
-        s1 = s1 * (i + 1) * (i + 2)
-        sinx += s / s1
+    var numerator = sinx
+    var denominator = 1.0
+    while (Math.abs(numerator / denominator) > eps) {
+        numerator = numerator * t * t * (-1)
+        denominator = denominator * (i + 1) * (i + 2)
+        sinx += numerator / denominator
         i = i + 2
     }
     return sinx
@@ -200,20 +197,14 @@ fun sin(x: Double, eps: Double): Double {
 fun cos(x: Double, eps: Double): Double {
     var cosx = 1.0
     var i = 0.0
-    var s1 = 1.0
-    var x1: Double
-    if (x >= 0) {
-        x1 = x
-    } else x1 = -x
-    while (x1 >= 2 * PI) {
-        x1 -= 2 * PI
-    }
-    var s = 1.0
+    var denominator = 1.0
+    val t = x%(2* PI)
+    var numerator = 1.0
     if (x == 0.0) return 1.0
-    while (abs(s / s1) >= eps) {
-        s1 = s1 * (i + 1.0) * (i + 2.0)
-        s = s * x1 * x1 * (-1.0)
-        cosx = cosx + s / s1
+    while (abs(numerator / denominator) >= eps) {
+        denominator = denominator * (i + 1.0) * (i + 2.0)
+        numerator = numerator * t * t * (-1.0)
+        cosx = cosx + numerator / denominator
         i = i + 2.0
     }
     return cosx
