@@ -211,8 +211,8 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
     val list = mutableListOf(start)
     var sq = start
     while (sq != end) {
-        val column = sq.column - end.row
-        val row = sq.row - end.row
+        val column = sq.column.compareTo(end.column)
+        val row = sq.row.compareTo(end.row)
         sq = Square(sq.column - column, sq.row - row)
         list.add(sq)
     }
