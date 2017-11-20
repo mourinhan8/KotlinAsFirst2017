@@ -68,10 +68,11 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    var parts = str.split(" ")
+    val parts = str.split(" ")
     val months = listOf<String>("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
             "сентября", "октября", "ноября", "декабря")
-    if (parts.size == 3) {
+    if (parts.size != 3) return ""
+    else {
         try {
             val day = parts[0].toInt()
             val year = parts[2].toInt()
@@ -81,7 +82,7 @@ fun dateStrToDigit(str: String): String {
         } catch (e: NumberFormatException) {
             return ""
         }
-    } else return ""
+    }
 }
 
 /**
@@ -161,14 +162,15 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     val list1 = jumps.split(" ")
     val list2 = mutableListOf<String>()
-    try {
-        for (i in list1.indices) {
-            if ("+" in list1[i]) list2.add(list1[i - 1])
-        }
-        return list2.map { it.toInt() }.max() ?: -1
+    for (i in list1.indices) {
+        if ("+" in list1[i]) list2.add(list1[i - 1])
+    }
+    val list3 = try {
+        list2.map { it.toInt() }
     } catch (e: NumberFormatException) {
         return -1
     }
+    return list3.max() ?: -1
 }
 
 /**
@@ -185,7 +187,7 @@ fun plusMinus(expression: String): Int {
     if (parts.size == 0 || parts.size % 2 == 0) throw IllegalArgumentException()
     try {
         var result = parts[0].toInt()
-        for (i in 1..parts.size step 2) {
+        for (i in 1..parts.size - 2 step 2) {
             val numb = parts[i + 1].toInt()
             when (parts[i]) {
                 "+" -> result += numb
