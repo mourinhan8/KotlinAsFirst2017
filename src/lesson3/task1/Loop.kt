@@ -173,7 +173,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    var sinx = x%(2* PI)
+    var sinx = x % (2 * PI)
     var i = 1
     val t = sinx
     var numerator = sinx
@@ -198,7 +198,7 @@ fun cos(x: Double, eps: Double): Double {
     var cosx = 1.0
     var i = 0.0
     var denominator = 1.0
-    val t = x%(2* PI)
+    val t = x % (2 * PI)
     var numerator = 1.0
     if (x == 0.0) return 1.0
     while (abs(numerator / denominator) >= eps) {
@@ -279,11 +279,11 @@ fun fibSequenceDigit(n: Int): Int {
     var i = 1
     while (k < n) {
         fn = fib(i)
-        k = k + digitNumber(fn)
+        k += digitNumber(fn)
         i++
     }
-    for (x in 1..k - n) {
-        fn = (fn - fn % 10) / 10
+    for (j in 1..k - n) {
+        fn /= 10
     }
     return fn % 10
 }
