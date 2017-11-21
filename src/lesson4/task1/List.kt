@@ -136,7 +136,7 @@ fun mean(list: List<Double>): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    var r: Double = mean(list)
+    val r: Double = mean(list)
     for (i in list.indices) {
         list[i] = list[i] - r
     }
@@ -201,7 +201,7 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    var m = mutableListOf<Int>()
+    val m = mutableListOf<Int>()
     var k = n
     while (k > 1) {
         val r = minDivisor(k)
@@ -248,7 +248,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    var digits = convert(n, base)
+    val digits = convert(n, base)
     val digitschar = mutableListOf<Char>()
     for (i in digits.indices) {
         if (digits[i] >= 10) digitschar.add('a' + digits[i] - 10)
