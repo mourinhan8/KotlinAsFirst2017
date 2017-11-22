@@ -2,7 +2,6 @@
 
 package lesson5.task1
 
-import lesson1.task1.numberRevert
 
 /**
  * Пример
@@ -234,7 +233,15 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть положительными
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    val parts = description.filter { it !in ";" }.split(" ")
+    if (parts.size % 2 != 0 && parts.size < 2) return ""
+    var cost = parts[1].toDouble()
+    for (i in 1..parts.size - 2 step 2) {
+        if (parts[i].toDouble() > cost) cost = parts[i].toDouble()
+    }
+    return parts[parts.indexOf(cost.toString()) - 1]
+}
 
 /**
  * Сложная
@@ -247,7 +254,23 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    val numb = listOf(1, 5, 10, 50, 100, 500, 1000)
+    val lama = listOf('I', 'V', 'X', 'L', 'C', 'D', 'M')
+    val parts = mutableListOf<Int>()
+    var result = 0
+    for (i in 0..roman.length - 1) {
+        for (j in 0..lama.size - 1) {
+            if (lama[j] == roman[i]) parts.add(numb[j])
+        }
+    }
+    if (parts.size != roman.length || roman.length == 0) return -1
+    if (parts.size == 1) return parts[0]
+    for (i in 0..parts.size - 2) {
+        if (parts[i] < parts[i + 1]) result -= parts[i] else result += parts[i]
+    }
+    return result + parts.last()
+}
 
 /**
  * Очень сложная
