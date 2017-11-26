@@ -18,11 +18,12 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun sumtwodigit (n : Int) : Int = n%10 + n/10
+fun sumTwoDigit(n: Int): Int = n % 10 + n / 10
+
 fun isNumberHappy(number: Int): Boolean {
     val a = number / 100
     val b = number % 100
-    return sumtwodigit(a) == sumtwodigit(b)
+    return sumTwoDigit(a) == sumTwoDigit(b)
 }
 
 
@@ -65,5 +66,5 @@ fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     val min2 = minOf(r, s)
     val med1 = a + b + c - min1 - max1
     val max2 = maxOf(r, s)
-    return min1 <= min2 && med1<= max2
+    return min1 <= min2 && med1 <= max2
 }

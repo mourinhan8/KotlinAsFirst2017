@@ -156,12 +156,12 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
      */
     fun crossPoint(other: Line): Point {
-        val a = (b * cos(other.angle) - other.b * cos(angle)) / sin(other.angle - angle)
-        val c = if (abs(PI / 2 - angle) > abs(PI / 2 - other.angle))
-            (a * sin(this.angle) + this.b) / cos(this.angle)
+        val x = (b * cos(other.angle) - other.b * cos(angle)) / sin(other.angle - angle)
+        val y = if (abs(PI / 2 - angle) > abs(PI / 2 - other.angle))
+            (x * sin(this.angle) + this.b) / cos(this.angle)
         else
-            (a * sin(other.angle) + other.b) / cos(other.angle)
-        return Point(a, c)
+            (x * sin(other.angle) + other.b) / cos(other.angle)
+        return Point(x, y)
     }
 
     override fun equals(other: Any?) = other is Line && angle == other.angle && b == other.b
@@ -180,14 +180,19 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = Line(s.begin, Math.atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x)))
+fun lineBySegment(s: Segment): Line {
+    var corner = atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
+    if (corner < 0) corner += PI
+    if (corner >= PI) corner -= PI
+    return Line(s.begin, corner)
+}
 
 /**
  * Средняя
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = Line(a, Math.atan(abs((a.y - b.y) / (a.x - b.x))))
+fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
 
 /**
  * Сложная
@@ -196,7 +201,13 @@ fun lineByPoints(a: Point, b: Point): Line = Line(a, Math.atan(abs((a.y - b.y) /
  */
 fun bisectorByPoints(a: Point, b: Point): Line {
     val point = Point((a.x + b.x) / 2, (a.y + b.y) / 2)
-    return Line(point, (lineByPoints(a, b).angle + Math.PI / 2) % Math.PI)
+    val line = lineByPoints(a, b)
+    val corner =
+            if (line.angle >= PI / 2)
+                line.angle - PI / 2
+            else
+                line.angle + PI / 2
+    return Line(point, corner)
 }
 
 /**
