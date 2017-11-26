@@ -232,12 +232,16 @@ fun firstDuplicateIndex(str: String): Int {
  */
 fun mostExpensive(description: String): String {
     val parts = description.filter { it !in ";" }.split(" ")
+    var numb = 0
     if (parts.size % 2 != 0 && parts.size < 2) return ""
     var cost = parts[1].toDouble()
     for (i in 1..parts.size - 2 step 2) {
-        if (parts[i].toDouble() > cost) cost = parts[i].toDouble()
+        if (parts[i].toDouble() > cost) {
+            cost = parts[i].toDouble()
+            numb = i - 1
+        }
     }
-    return parts[parts.indexOf(cost.toString()) - 1]
+    return parts[numb]
 }
 
 /**
