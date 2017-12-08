@@ -251,7 +251,7 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
-fun lookingFor(n: Int, k: Int, x: Int): Int {
+fun lookFor(n: Int, k: Int, x: Int): Int {
     var e = x
     for (i in 1..k - n) {
         e /= 10
