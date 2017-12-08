@@ -71,7 +71,8 @@ val months = listOf<String>("января", "февраля", "марта", "а�
 
 fun dateStrToDigit(str: String): String {
     val parts = str.split(" ")
-    if (parts.size == 3) {
+    if (parts.size != 3) return ""
+    else {
         try {
             val day = parts[0].toInt()
             val year = parts[2].toInt()
@@ -81,7 +82,7 @@ fun dateStrToDigit(str: String): String {
         } catch (e: NumberFormatException) {
             return ""
         }
-    } else return ""
+    }
 }
 
 /**
@@ -93,7 +94,8 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val parts = digital.split(".")
-    if (parts.size == 3) {
+    if (parts.size != 3) return ""
+    else {
         try {
             val day = parts[0].toInt()
             val monthNumber = parts[1].toInt()
@@ -103,8 +105,9 @@ fun dateDigitToStr(digital: String): String {
         } catch (e: NumberFormatException) {
             return ""
         }
-    } else return ""
+    }
 }
+
 
 /**
  * Средняя
@@ -231,7 +234,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть положительными
  */
 fun mostExpensive(description: String): String {
-    val parts = description.filter { it !in ";" }.split(" ")
+    val parts = description.split("; ", " ")
     var numb = 0
     if (parts.size % 2 != 0 && parts.size < 2) return ""
     var cost = parts[1].toDouble()

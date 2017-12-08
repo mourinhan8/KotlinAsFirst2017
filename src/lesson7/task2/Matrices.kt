@@ -61,25 +61,24 @@ operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
  *  9  8  7  6
  */
 fun generateSpiral(height: Int, width: Int): Matrix<Int> {
-    val result = createMatrix(height, width, 0)
-    val numb = (Math.min(height, width) + 1) / 2
-    var digit = 1
-    for (i in 0..numb - 1) {
-        for (j in i..width - i - 1)
-            result[i, j] = digit++
-        var check = true
-        for (j in i + 1..height - i - 1) {
-            result[j, width - i - 1] = digit++
-            check = false
+    val result = createMatrix(height, width, height * width)
+    var t = 1
+    var num = 1
+    while (num <= height * width) {
+        for (j in t - 1 until width - t + 1) {
+            result[t - 1, j] = num++
         }
-        if (check) break
-        check = true
-        for (j in width - i - 2 downTo i) {
-            result[height - i - 1, j] = digit++
-            check = false
+        for (i in t until height - t + 1) {
+            result[i, width - t] = num++
         }
-        if (check) break
-        for (j in height - i - 2 downTo i + 1) result[j, i] = digit++
+        if (num >= height * width) return result
+        for (j in width - t - 1 downTo t - 1) {
+            result[height - t, j] = num++
+        }
+        for (i in height - t - 1 downTo t) {
+            result[i, t - 1] = num++
+        }
+        t++
     }
     return result
 }
@@ -252,11 +251,11 @@ data class Holes(val rows: List<Int>, val columns: List<Int>)
  * К примеру, центральный элемент 12 = 1 + 2 + 4 + 5, элемент в левом нижнем углу 12 = 1 + 4 + 7 и так далее.
  */
 fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
-    val matr = createMatrix(matrix.height + 1, matrix.width + 1, 0)
+    val mat = createMatrix(matrix.height + 1, matrix.width + 1, 0)
     for (i in 1..matrix.height)
         for (j in 1..matrix.width) {
-            matr[i, j] = matr[i, j - 1] + matr[i - 1, j] - matr[i - 1, j - 1] + matrix[i - 1, j - 1]
-            matrix[i - 1, j - 1] = matr[i, j]
+            mat[i, j] = mat[i, j - 1] + mat[i - 1, j] - mat[i - 1, j - 1] + matrix[i - 1, j - 1]
+            matrix[i - 1, j - 1] = mat[i, j]
         }
     return matrix
 }

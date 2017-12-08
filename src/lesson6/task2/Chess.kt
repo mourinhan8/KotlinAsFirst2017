@@ -25,6 +25,7 @@ data class Square(val column: Int, val row: Int) {
      * Для клетки не в пределах доски вернуть пустую строку
      */
     val letter = "abcdefgh"
+
     fun notation(): String {
         if (!inside()) return ""
         return letter[column - 1] + "$row"
@@ -161,9 +162,8 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
             val r1 = (start.column - end.column + start.row + end.row) / 2
             val c2 = (end.row - start.row + start.column + end.column) / 2
             val r2 = (end.column - start.column + start.row + end.row) / 2
-            val center =
-                    if (Square(c1, r1).inside()) Square(c1, r1)
-                    else Square(c2, r2)
+            var center = Square(c1, r1)
+            if (!center.inside()) center = Square(c2, r2)
             return listOf(start, center, end)
         }
         else -> return listOf()
