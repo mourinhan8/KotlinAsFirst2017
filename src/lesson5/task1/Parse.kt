@@ -123,9 +123,13 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     val parts = phone.filter { it !in "- ()" }
-    if (phone.drop(1).any { it == '+' }) return ""
-    if (parts.any { it !in '0'..'9' && it != '+' } || parts == "+") return ""
-    return parts
+    try {
+        if (phone.drop(1).any { it == '+' }) return ""
+        if (parts.any { it !in '0'..'9' && it != '+' } || parts == "+") return ""
+        return parts
+    } catch (e: NumberFormatException) {
+        return ""
+    }
 }
 
 /**
@@ -234,9 +238,10 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть положительными
  */
 fun mostExpensive(description: String): String {
+    val result: String
+    var numb = 0
     try {
         val parts = description.split("; ", " ")
-        var numb = 0
         if (parts.size % 2 != 0 && parts.size < 2) return ""
         var cost = parts[1].toDouble()
         for (i in 1..parts.size - 2 step 2) {
@@ -245,10 +250,11 @@ fun mostExpensive(description: String): String {
                 numb = i - 1
             }
         }
-        return parts[numb]
+        result = parts[numb]
     } catch (e: NumberFormatException) {
         return ""
     }
+    return result
 }
 
 /**
