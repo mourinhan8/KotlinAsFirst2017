@@ -130,4 +130,21 @@ class Tests {
         assertEquals(listOf(0, 6, 5, 4, 3, 2, 1, 0, -1, -1, -2),
                 computeDeviceCells(11, "<<<<< + >>>>>>>>>> --[<-] >+[>+] >++[--< <[<] >+[>+] >++]", 256))
     }
+    @Test
+    fun whoPastExam() {
+        val Marks = listOf<String>("Петров Иван  -   Математика 3, Физика 4, Химия 5", //4
+                "Сидоров Петр - Литература 2, Биология 3, Химия 5", //3.3
+                "Смирнов Василий - Математика 4, Физкультура 5", //4.5
+                "Александров Николай - Математика 2") //2
+        val error = listOf<String>("Петров Иван - Математика 3, Физика 4, Химия 5",
+                "+")
+        try{
+            whoPastExam(error, 3.0)
+            throw IllegalArgumentException()
+        }catch (e: Exception){
+        }
+        assertEquals(listOf("Петров Иван", "Смирнов Василий"), whoPastExam(Marks, 3.5))
+        assertEquals(listOf("Петров Иван","Сидоров Петр", "Смирнов Василий"), whoPastExam(Marks, 3.0))
+
+    }
 }

@@ -165,7 +165,30 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    val res = File(outputName).bufferedWriter()
+    var maxLength = 0
+    val file = File(inputName).readLines()
+    for (line in file) {
+        val length = line.split(" ").filter { it != "" }.joinToString(separator = " ").length
+        if (length > maxLength)
+            maxLength = length
+    }
+    for (line in file) {
+        var string: String
+        val word = line.split(" ").filter { it != "" }.toMutableList()
+        if (word.size > 1) {
+            while (maxLength > word.joinToString(separator = "").length) {
+                for (i in 0 until word.size - 1)
+                    if (maxLength > word.joinToString(separator = "").length)
+                        if (maxLength > word.joinToString(separator = "").length)
+                            word[i] += " "
+            }
+            string = word.joinToString(separator = "")
+        } else string = line.trim()
+        res.write(string)
+        res.newLine()
+    }
+    res.close()
 }
 
 /**
@@ -239,7 +262,34 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    TODO()
+    val file = File(inputName).readLines()
+    val res = File(outputName).bufferedWriter()
+    val listStr = mutableListOf<String>()
+    var max = 0
+    var resString = ""
+    var t = true
+    for (str in file) {
+        for (i in 0 until str.length)
+            for (j in i + 1 until str.length)
+                if (str[i].toLowerCase() == str[j].toLowerCase())
+                    t = false
+        if (t) {
+            listStr.add(str)
+            if (str.length >= max)
+                max = str.length
+        }
+        t = true
+    }
+    if (listStr.isNotEmpty()) {
+        for (elem in listStr)
+            if (elem.length == max)
+                resString += elem + ", "
+        if (resString.last() == ' ')
+            for (i in 0 until resString.length - 2)
+                res.write(resString[i].toString())
+        else res.write(resString)
+    } else res.write("")
+    res.close()
 }
 
 /**

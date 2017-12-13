@@ -234,17 +234,21 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть положительными
  */
 fun mostExpensive(description: String): String {
-    val parts = description.split("; ", " ")
-    var numb = 0
-    if (parts.size % 2 != 0 && parts.size < 2) return ""
-    var cost = parts[1].toDouble()
-    for (i in 1..parts.size - 2 step 2) {
-        if (parts[i].toDouble() > cost) {
-            cost = parts[i].toDouble()
-            numb = i - 1
+    try {
+        val parts = description.split("; ", " ")
+        var numb = 0
+        if (parts.size % 2 != 0 && parts.size < 2) return ""
+        var cost = parts[1].toDouble()
+        for (i in 1..parts.size - 2 step 2) {
+            if (parts[i].toDouble() > cost) {
+                cost = parts[i].toDouble()
+                numb = i - 1
+            }
         }
+        return parts[numb]
+    } catch (e: NumberFormatException) {
+        return ""
     }
-    return parts[numb]
 }
 
 /**
@@ -313,3 +317,32 @@ fun fromRoman(roman: String): Int {
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+fun whoPastExam(examResults: List<String>, threshold: Double): List<String> {
+    var parts: List<String>
+    var points: List<String>
+    var name: String
+    var sum: Double
+    var n: Int
+    var calculation: Double
+    val result = mutableListOf<String>()
+    val format = Regex("""^([а-яА-Я]+)\s+([а-яА-Я]+)\s+-(\s+([а-яА-Я]+)\s+([0-9]))(,\s+([а-яА-Я]+)\s+([0-9]))*$""")
+    for (s in examResults)
+        if (!s.matches(format)) throw IllegalArgumentException()
+    for (s in examResults) {
+        parts = Regex("""\s+-\s+""").split(s)
+        name = parts[0]
+        points = Regex("""(,)?\s+""").split(parts[1])
+        sum = 0.0
+        n = 0
+        for (i in 1..points.size - 1 step 2) {
+            sum += points[i].toDouble()
+            n++
+        }
+        calculation = sum / n
+
+        if (calculation > threshold)
+            result.add(name)
+    }
+    return result.toList()
+}
