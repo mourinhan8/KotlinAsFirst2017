@@ -72,16 +72,14 @@ val months = listOf<String>("января", "февраля", "марта", "а�
 fun dateStrToDigit(str: String): String {
     val parts = str.split(" ")
     if (parts.size != 3) return ""
-    else {
-        try {
-            val day = parts[0].toInt()
-            val year = parts[2].toInt()
-            val month = months.indexOf(parts[1]) + 1
-            if (month == 0) return ""
-            return String.format("%02d.%02d.%d", day, month, year)
-        } catch (e: NumberFormatException) {
-            return ""
-        }
+    try {
+        val day = parts[0].toInt()
+        val year = parts[2].toInt()
+        val month = months.indexOf(parts[1]) + 1
+        if (month == 0) return ""
+        return String.format("%02d.%02d.%d", day, month, year)
+    } catch (e: NumberFormatException) {
+        return ""
     }
 }
 
@@ -95,17 +93,16 @@ fun dateStrToDigit(str: String): String {
 fun dateDigitToStr(digital: String): String {
     val parts = digital.split(".")
     if (parts.size != 3) return ""
-    else {
-        try {
-            val day = parts[0].toInt()
-            val monthNumber = parts[1].toInt()
-            if (monthNumber !in 1..12) return ""
-            val month = months[monthNumber - 1]
-            return String.format("%d %s %s", day, month, parts[2])
-        } catch (e: NumberFormatException) {
-            return ""
-        }
+    try {
+        val day = parts[0].toInt()
+        val monthNumber = parts[1].toInt()
+        if (monthNumber !in 1..12) return ""
+        val month = months[monthNumber - 1]
+        return String.format("%d %s %s", day, month, parts[2])
+    } catch (e: NumberFormatException) {
+        return ""
     }
+
 }
 
 
@@ -238,19 +235,20 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть положительными
  */
 fun mostExpensive(description: String): String {
-    val result: String
-    var numb = 0
+    var result = ""
+    var cost = 0.0
     try {
-        val parts = description.split("; ", " ")
-        if (parts.size % 2 != 0 && parts.size < 2) return ""
-        var cost = parts[1].toDouble()
-        for (i in 1..parts.size - 2 step 2) {
-            if (parts[i].toDouble() > cost) {
-                cost = parts[i].toDouble()
-                numb = i - 1
+        val parts = description.split("; ")
+        for (part in parts) {
+            val thing = part.split(" ")
+            if (thing.size != 2) return ""
+            val numb = thing[1].toDouble()
+            if (numb < 0.0) return ""
+            if (cost <= numb) {
+                cost = numb
+                result = thing[0]
             }
         }
-        result = parts[numb]
     } catch (e: NumberFormatException) {
         return ""
     }
