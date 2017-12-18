@@ -86,17 +86,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    val reg = Regex("ж|ш|ч|щ|Ж|Ш|Ч|Щ")
-    val vowels = listOf(Pair('Ы', 'И'), Pair('Я', 'А'), Pair('Ю', 'У'), Pair('ы', 'и'),
-            Pair('я', 'а'), Pair('ю', 'у'))
-    val input = File(inputName).readText().toMutableList()
-    for (i in 0 until input.size - 1)
-        if (reg matches input[i].toString())
-            for (j in 0 until vowels.size)
-                if (input[i + 1] == vowels[j].first) input[i + 1] = vowels[j].second
-    val result = File(outputName).bufferedWriter()
-    for (ch in input) result.append(ch)
-    result.close()
+    TODO()
 }
 
 /**
@@ -165,30 +155,7 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    val res = File(outputName).bufferedWriter()
-    var maxLength = 0
-    val file = File(inputName).readLines()
-    for (line in file) {
-        val length = line.split(" ").filter { it != "" }.joinToString(separator = " ").length
-        if (length > maxLength)
-            maxLength = length
-    }
-    for (line in file) {
-        var string: String
-        val word = line.split(" ").filter { it != "" }.toMutableList()
-        if (word.size > 1) {
-            while (maxLength > word.joinToString(separator = "").length) {
-                for (i in 0 until word.size - 1)
-                    if (maxLength > word.joinToString(separator = "").length)
-                        if (maxLength > word.joinToString(separator = "").length)
-                            word[i] += " "
-            }
-            string = word.joinToString(separator = "")
-        } else string = line.trim()
-        res.write(string)
-        res.newLine()
-    }
-    res.close()
+    TODO()
 }
 
 /**
@@ -262,34 +229,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    val file = File(inputName).readLines()
-    val res = File(outputName).bufferedWriter()
-    val listStr = mutableListOf<String>()
-    var max = 0
-    var resString = ""
-    var t = true
-    for (str in file) {
-        for (i in 0 until str.length)
-            for (j in i + 1 until str.length)
-                if (str[i].toLowerCase() == str[j].toLowerCase())
-                    t = false
-        if (t) {
-            listStr.add(str)
-            if (str.length >= max)
-                max = str.length
-        }
-        t = true
-    }
-    if (listStr.isNotEmpty()) {
-        for (elem in listStr)
-            if (elem.length == max)
-                resString += elem + ", "
-        if (resString.last() == ' ')
-            for (i in 0 until resString.length - 2)
-                res.write(resString[i].toString())
-        else res.write(resString)
-    } else res.write("")
-    res.close()
+    TODO()
 }
 
 /**
@@ -432,41 +372,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
 ///////////////////////////////конец файла//////////////////////////////////////////////////////////////////////////////
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
-fun markdownToHtmlListsConstructor(lines: List<String>, index: Int): String {
-    val sb = StringBuilder()
-    if (lines[0][index] == '*') sb.append("<ul>")
-    if (lines[0][index] in '1'..'9') sb.append("<ol>")
-    var label = true
-    for (i in 0..lines.size - 1) {
-        val temp = lines[i].filter { it !in "123456890. " }
-        if (lines[i][index] != ' ') {
-            label = true
-            sb.append("<li>$temp")
-            if (i == lines.size - 1 || lines[i + 1][index] != ' ') sb.append("</li>")
-        }
-        if (lines[i][index] == ' ' && label) {
-            val list = mutableListOf(lines[i])
-            var k = i + 1
-            while (k <= lines.size - 1 && lines[k][index] == ' ') {
-                list.add(lines[k])
-                k++
-            }
-            label = false
-            sb.append(markdownToHtmlListsConstructor(list, index + 4))
-            sb.append("</li>")
-        }
-    }
-    if (lines[0][index] == '*') sb.append("</ul>")
-    if (lines[0][index] in '1'..'9') sb.append("</ol>")
-    return sb.toString().split("<li>*").joinToString(separator = "<li>")
-}
-
 fun markdownToHtmlLists(inputName: String, outputName: String) {
-    val lines = File(inputName).readLines()
-    val outputStream = File(outputName).bufferedWriter()
-    val text = markdownToHtmlListsConstructor(lines, 0)
-    outputStream.write("<html><body>$text</body></html>")
-    outputStream.close()
+    TODO()
 }
 
 /**
@@ -477,76 +384,8 @@ fun markdownToHtmlLists(inputName: String, outputName: String) {
  * - Списки, отделённые друг от друга пустой строкой, являются разными и должны оказаться в разных параграфах выходного файла.
  *
  */
-fun markdownToHtmlSimpleConstructor(lines: List<String>): String {
-    val keys = listOf(Triple("**", "<b>", "</b>"), Triple("*", "<i>", "</i>"), Triple("~~", "<s>", "</s>"))
-    var text = lines.joinToString(separator = "\n").split("\n\n").joinToString(separator = "</p><p>")
-    for (key in keys) {
-        val temp = text.split(key.first).toMutableList()
-        if (temp.size == 1) continue
-        if (temp.size % 2 == 0) {
-            temp[temp.size - 2] += key.first + temp[temp.size - 1]
-            temp.removeAt(temp.size - 1)
-        }
-        val sb = StringBuilder()
-        var k = true
-        for (i in 0..temp.size - 2) {
-            if (k) {
-                sb.append((listOf(temp[i], temp[i + 1])).joinToString(separator = key.second))
-                k = false
-            } else {
-                sb.append(key.third)
-                k = true
-            }
-        }
-        sb.append(temp[temp.size - 1])
-        text = sb.toString()
-    }
-    return text
-}
-
 fun markdownToHtml(inputName: String, outputName: String) {
-    val lines = File(inputName).readLines()
-    val outputStream = File(outputName).bufferedWriter()
-    outputStream.write("<html><body>")
-    var labelLists = true
-    var labelSimple = true
-    for (i in 0..lines.size - 1) {
-        when {
-            lines[i].isEmpty() && i != lines.size - 1 -> {
-                outputStream.newLine()
-                labelLists = true
-                labelSimple = true
-            }
-            lines[i].trim()[0] != '*' && lines[i].trim()[0] !in '1'..'9' && labelSimple -> {
-                labelSimple = false
-                labelLists = true
-                val list = mutableListOf(lines[i])
-                var k = i + 1
-                while (k <= lines.size - 1 && lines[k].isNotEmpty() &&
-                        (lines[k][0] != '*' && lines[k][0] !in '1'..'9')) {
-                    list.add(lines[k])
-                    k++
-                }
-                outputStream.write("<p>")
-                outputStream.write(markdownToHtmlSimpleConstructor(list))
-                outputStream.write("</p>")
-            }
-            (lines[i][0] == '*' || lines[i][0] in '1'..'9') && labelLists -> {
-                labelLists = false
-                labelSimple = true
-                val list = mutableListOf(lines[i])
-                var k = i + 1
-                while (k <= lines.size - 1 && lines[k].isNotEmpty() && (lines[k][0] in "* " || lines[k][0] in '0'..'9')) {
-                    list.add(lines[k])
-                    k++
-                }
-                outputStream.write(markdownToHtmlListsConstructor(list, 0))
-                if (k != lines.size - 1) outputStream.newLine()
-            }
-        }
-    }
-    outputStream.write("</body></html>")
-    outputStream.close()
+    TODO()
 }
 
 /**
