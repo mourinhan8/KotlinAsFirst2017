@@ -89,7 +89,7 @@ fun sibilants(inputName: String, outputName: String) {
     val result = File(outputName).bufferedWriter()
     val list = listOf<Char>('Ж', 'Ч', 'Ш', 'Щ', 'ж', 'ч', 'ш', 'щ')
     val list1 = listOf('Ы' to 'И', 'Я' to 'А', 'Ю' to 'У', 'ы' to 'и',
-            'я' to  'а', 'ю' to 'у')
+            'я' to 'а', 'ю' to 'у')
     val input = File(inputName).readText().toMutableList()
     for (i in 0..input.size - 1) {
         if (input[i] in list)
@@ -120,8 +120,10 @@ fun sibilants(inputName: String, outputName: String) {
  */
 fun maxLength(inputName: String): Int {
     var maxLength = -1
-    for (line in File(inputName).readLines())
-        if (line.trim().length > maxLength) maxLength = line.trim().length
+    for (line in File(inputName).readLines()) {
+        val len = line.trim().length
+        if (len > maxLength) maxLength = len
+    }
     return maxLength
 }
 
