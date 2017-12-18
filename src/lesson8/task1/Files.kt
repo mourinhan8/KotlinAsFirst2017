@@ -432,7 +432,9 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
 ///////////////////////////////конец файла//////////////////////////////////////////////////////////////////////////////
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
-fun markdownToHtmlListsConstructor(lines: List<String>, index: Int): String = TODO()
+fun markdownToHtmlLists(inputName: String, outputName: String) {
+    TODO()
+}
 
 /**
  * Очень сложная
@@ -442,7 +444,9 @@ fun markdownToHtmlListsConstructor(lines: List<String>, index: Int): String = TO
  * - Списки, отделённые друг от друга пустой строкой, являются разными и должны оказаться в разных параграфах выходного файла.
  *
  */
-fun markdownToHtmlSimpleConstructor(lines: List<String>): String = TODO()
+fun markdownToHtml(inputName: String, outputName: String) {
+    TODO()
+}
 
 /**
  * Средняя
