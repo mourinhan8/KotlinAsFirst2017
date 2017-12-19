@@ -61,24 +61,25 @@ operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
  *  9  8  7  6
  */
 fun generateSpiral(height: Int, width: Int): Matrix<Int> {
-    val result = createMatrix(height, width, height * width)
-    var t = 1
-    var num = 1
-    while (num <= height * width) {
-        for (j in t - 1 until width - t + 1) {
-            result[t - 1, j] = num++
+    val result = createMatrix(height, width, 0)
+    val numb = (Math.min(height, width) + 1) / 2
+    var digit = 1
+    for (i in 0..numb - 1) {
+        for (j in i..width - i - 1)
+            result[i, j] = digit++
+        var check = true
+        for (j in i + 1..height - i - 1) {
+            result[j, width - i - 1] = digit++
+            check = false
         }
-        for (i in t until height - t + 1) {
-            result[i, width - t] = num++
+        if (check) break
+        check = true
+        for (j in width - i - 2 downTo i) {
+            result[height - i - 1, j] = digit++
+            check = false
         }
-        if (num >= height * width) return result
-        for (j in width - t - 1 downTo t - 1) {
-            result[height - t, j] = num++
-        }
-        for (i in height - t - 1 downTo t) {
-            result[i, t - 1] = num++
-        }
-        t++
+        if (check) break
+        for (j in height - i - 2 downTo i + 1) result[j, i] = digit++
     }
     return result
 }
@@ -143,15 +144,11 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
  */
 fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
     if (matrix.height != matrix.width) throw IllegalArgumentException()
-    val size = matrix.height
-    val result = createMatrix(size, size, matrix[0, 0])
-    for (row in 0 until size)
-        for (column in 0 until size)
-            result[row, column] = matrix[row, column]
-    for (row in 0 until size){
-        for (column in 0 until size)
-            result[column, size - 1 - row] = matrix[row, column]
-    }
+    val k = matrix.width - 1
+    val result = createMatrix(k + 1, k + 1, matrix[0, 0])
+    for (i in 0..k)
+        for (j in 0..k)
+            result[i, j] = matrix[k - j, i]
     return result
 }
 
