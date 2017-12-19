@@ -55,22 +55,18 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val result = mutableMapOf<String, Int>()
-    val text = File(inputName).readText().toLowerCase()
-    for (str in substrings) {
-        val str1 = str.toLowerCase()
-        var times = -1
-        var indexOfStr = 0
-        var index = -1
-        while (indexOfStr != -1) {
-            indexOfStr = text.indexOf(str1, index + 1)
-            times++
-            index = indexOfStr
+    val vanban = File(inputName).readText().toLowerCase()
+    for (a in substrings) {
+        var count = -1
+        var ind = 0
+        while (ind != -1) {
+            ind = vanban.indexOf(a.toLowerCase(), ind + 1)
+            count++
         }
-        result.put(str, times)
+        result.put(a, count)
     }
     return result
 }
-
 
 /**
  * Средняя
@@ -118,27 +114,26 @@ fun sibilants(inputName: String, outputName: String) {
  * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых)
  *
  */
-fun maxLength(inputName: String): Int {
-    var maxLength = -1
-    for (line in File(inputName).readLines()) {
-        val len = line.trim().length
-        if (len > maxLength) maxLength = len
-    }
-    return maxLength
-}
-
 fun centerFile(inputName: String, outputName: String) {
-    val outputStream = File(outputName).bufferedWriter()
-    val lines = File(inputName).readLines()
-    val maxLength = maxLength(inputName)
-    for (line in lines) {
-        val lineLength = line.trim().length
-        for (i in 1..(maxLength - lineLength) / 2) outputStream.write(" ")
-        outputStream.write(line.trim())
-        if (lines.size != 1 && line != lines.last())
-            outputStream.newLine()
+    val text = File(inputName).readLines()
+    val result = File(outputName).bufferedWriter()
+    var max = 0
+    for (k in text) {
+        val s = k.trim().length
+        if (s >= max) {
+            max = s
+        }
     }
-    outputStream.close()
+    for (k in text) {
+        val s = k.trim().length
+        val n = (max - s) / 2
+        for (i in 1..n) {
+            result.write(" ")
+        }
+        result.write(k.trim())
+        result.newLine()
+    }
+    result.close()
 }
 
 /**
@@ -169,7 +164,30 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    val text = File(inputName).readLines()
+    val result = File(outputName).bufferedWriter()
+    var max = 0
+    for (k in text) {
+        val s = k.trim().length
+        if (s >= max) {
+            max = s
+        }
+    }
+    for (k in text) {
+        var str: String
+        val part = k.split(" ").filter { it != "" }.toMutableList()
+        if (part.size > 1) {
+            while (max > part.joinToString("").length) {
+                for (i in 0..part.size - 2)
+                    if (max > part.joinToString("").length)
+                        part[i] += " "
+            }
+            str = part.joinToString("")
+        } else str = k.trim()
+        result.write(str)
+        result.newLine()
+    }
+    result.close()
 }
 
 /**
@@ -186,7 +204,26 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    var d = 0
+    val result = mutableMapOf<String, Int>()
+    val file = File(inputName).readText().toLowerCase()
+    val part = file.split(" ", ",\r", ".\r",";\r","\r", "\n" ).
+            filter { it in "а".."я" }.filter { it != "" }
+    val res = mutableMapOf<String, Int>()
+    part.sorted()
+    result.put(part[0], 1)
+    for (i in 1..part.size - 1) {
+        if (part[i] == part[i - 1]) {
+            d++
+        }
+        else {
+            result.put(part[i], d)
+            d = 1
+        }
+    }
+    return result
+}
 
 /**
  * Средняя
