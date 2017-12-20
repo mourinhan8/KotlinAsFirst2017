@@ -310,7 +310,7 @@ fun tuDaiNhat(list: List<String>): Int {
 
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val file = File(inputName).readText()
-    val list = file.split("\n", "\r").filter { it != "" }
+    val list = file.split("\n", "\r", " ").filter { it != "" }
     val max = tuDaiNhat(list)
     val res = mutableListOf<String>()
     val result = File(outputName).bufferedWriter()
