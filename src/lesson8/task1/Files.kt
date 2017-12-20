@@ -207,25 +207,24 @@ fun alignFileByWidth(inputName: String, outputName: String) {
 fun top20Words(inputName: String): Map<String, Int> {
     val result = mutableMapOf<String, Int>()
     val file = File(inputName).readText().toLowerCase()
-    val part = file.split(" ", ",\r", ".\r", ";\r", "\r", "\n", "!", ",", ":", ".").
+    val part = file.split(" ", ",\r", ".\r", ";\r", "\r", "\n", "!", ",", ":", ".", "?").
             filter { it in "а".."я" }.filter { it != "" }
     val a = part.sorted()
     val res1 = mutableMapOf<Int, String>()
     val res2 = mutableMapOf<String, Int>()
     result.put(a[0].trim(), 1)
-    for (i in 1..a.size - 1){
-        if (a[i].trim().toLowerCase() != a[i - 1].trim().toLowerCase()) result.put(a[i], 1)
-        else {
-            result[a[i].trim()] = result[a[i].trim()]!!.plus(1)}
+    for (i in 1..a.size - 1) {
+        if (a[i].trim().toLowerCase() != a[i - 1].trim().toLowerCase()) result.put(a[i].trim(), 1)
+        else result[a[i].trim()] = result[a[i].trim()]!!.plus(1)
     }
     for ((key, value) in result) {
         res1.put(value, key)
     }
-    res1.toSortedMap()
-    if (res1.size <= 20) for ((key, value) in res1) res2.put(value, key)
-    if (res1.size >= 20) {
-        val list = res1.toList()
-        for (i in list) res2.put(i.second, i.first)
+    val res = res1.toSortedMap()
+    val list = res.toList()
+    if (res.size <= 20) for (i in list.size - 1 downTo 0) res2.put(list[i].second, list[i].first)
+    if (res.size >= 20) {
+        for (i in list.size - 1 downTo list.size - 20) res2.put(list[i].second, list[i].first)
     }
     return res2
 }
