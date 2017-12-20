@@ -205,24 +205,29 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  *
  */
 fun top20Words(inputName: String): Map<String, Int> {
-    var d = 0
     val result = mutableMapOf<String, Int>()
     val file = File(inputName).readText().toLowerCase()
-    val part = file.split(" ", ",\r", ".\r",";\r","\r", "\n" ).
+    val part = file.split(" ", ",\r", ".\r", ";\r", "\r", "\n", "!", ",", ":", ".").
             filter { it in "а".."я" }.filter { it != "" }
-    val res = mutableMapOf<String, Int>()
-    part.sorted()
-    result.put(part[0], 1)
-    for (i in 1..part.size - 1) {
-        if (part[i] == part[i - 1]) {
-            d++
-        }
+    val a = part.sorted()
+    val res1 = mutableMapOf<Int, String>()
+    val res2 = mutableMapOf<String, Int>()
+    result.put(a[0].trim(), 1)
+    for (i in 1..a.size - 1){
+        if (a[i].trim().toLowerCase() != a[i - 1].trim().toLowerCase()) result.put(a[i], 1)
         else {
-            result.put(part[i], d)
-            d = 1
-        }
+            result[a[i].trim()] = result[a[i].trim()]!!.plus(1)}
     }
-    return result
+    for ((key, value) in result) {
+        res1.put(value, key)
+    }
+    res1.toSortedMap()
+    if (res1.size <= 20) for ((key, value) in res1) res2.put(value, key)
+    if (res1.size >= 20) {
+        val list = res1.toList()
+        for (i in list) res2.put(i.second, i.first)
+    }
+    return res2
 }
 
 /**
@@ -258,7 +263,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
         list1.add(file[i].toString())
     }
     val list = dictionary.toList()
-    for (i in 0..list1.size - 1){
+    for (i in 0..list1.size - 1) {
         for (j in 0..list.size - 1) {
             val k = list1[i].compareTo(list[j].first.toString(), ignoreCase = true)
             if (k == 0) list1[i] = list[j].second
@@ -296,8 +301,37 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  *
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
+fun tuDaiNhat(list: List<String>): Int {
+    var max = 0
+    for (i in list) {
+        if (i.length > max) max = i.length
+    }
+    return max
+}
+
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    TODO()
+    val file = File(inputName).readText()
+    val list = file.split("\n", "\r").filter { it != "" }
+    val max = tuDaiNhat(list)
+    val res = mutableListOf<String>()
+    val result = File(outputName).bufferedWriter()
+    val list2 = mutableListOf<String>()
+    for (i in list)
+        if (i.length == max) list2.add(i)
+    var test = true
+    for (word in list2) {
+        for (i in 0..word.length - 2) {
+            for (j in i + 1..word.length - 1) {
+                if (word[i].toLowerCase() == word[j].toLowerCase())
+                    test = false
+            }
+        }
+        if (test)
+            res.add(word)
+    }
+    val str = res.joinToString(", ")
+    result.write(str)
+    result.close()
 }
 
 /**
