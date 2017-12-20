@@ -62,23 +62,23 @@ operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
  */
 fun generateSpiral(height: Int, width: Int): Matrix<Int> {
     val result = createMatrix(height, width, 0)
-    val numb = (Math.min(height, width) + 1) / 2
+    val n = (Math.min(height, width) + 1) / 2
     var digit = 1
-    for (i in 0..numb - 1) {
+    for (i in 0..n - 1) {
         for (j in i..width - i - 1)
             result[i, j] = digit++
-        var check = true
+        var ch = true
         for (j in i + 1..height - i - 1) {
             result[j, width - i - 1] = digit++
-            check = false
+            ch = false
         }
-        if (check) break
-        check = true
+        if (ch) break
+        ch = true
         for (j in width - i - 2 downTo i) {
             result[height - i - 1, j] = digit++
-            check = false
+            ch = false
         }
-        if (check) break
+        if (ch) break
         for (j in height - i - 2 downTo i + 1) result[j, i] = digit++
     }
     return result
@@ -99,10 +99,10 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
  *  1  1  1  1  1  1
  */
 fun generateRectangles(height: Int, width: Int): Matrix<Int> {
+    val n = (Math.min(height, width) + 1) / 2
     val result = createMatrix(height, width, 0)
-    val numb = (Math.min(height, width) + 1) / 2
     var digit = 1
-    for (i in 0..numb - 1) {
+    for (i in 0..n - 1) {
         for (j in i..width - i - 1) {
             result[i, j] = digit
             result[height - i - 1, j] = digit
@@ -144,11 +144,11 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
  */
 fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
     if (matrix.height != matrix.width) throw IllegalArgumentException()
-    val k = matrix.width - 1
-    val result = createMatrix(k + 1, k + 1, matrix[0, 0])
-    for (i in 0..k)
-        for (j in 0..k)
-            result[i, j] = matrix[k - j, i]
+    val n = matrix.width - 1
+    val result = createMatrix(n + 1, n + 1, matrix[0, 0])
+    for (i in 0..n)
+        for (j in 0..n)
+            result[i, j] = matrix[n - j, i]
     return result
 }
 
@@ -167,14 +167,14 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
  */
 fun isLatinSquare(matrix: Matrix<Int>): Boolean {
     if (matrix.height != matrix.width) return false
-    val size = matrix.width
-    for (i in 0..size - 1) {
-        val set1 = mutableSetOf<Int>()
-        val set2 = mutableSetOf<Int>()
-        for (j in 0..size - 1) {
-            if (matrix[i, j] !in 1..size || matrix[i, j] in set1 || matrix[j, i] in set2) return false
-            set1.add(matrix[i, j])
-            set2.add(matrix[j, i])
+    val n = matrix.width
+    for (i in 0..n - 1) {
+        val list1 = mutableSetOf<Int>()
+        val list2 = mutableSetOf<Int>()
+        for (j in 0..n - 1) {
+            if (matrix[i, j] !in 1..n || matrix[i, j] in list1 || matrix[j, i] in list2) return false
+            list1.add(matrix[i, j])
+            list1.add(matrix[j, i])
         }
     }
     return true
@@ -215,21 +215,21 @@ fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> = TODO()
  * 0 0 0 0
  */
 fun findHoles(matrix: Matrix<Int>): Holes {
-    val rows = mutableListOf<Int>()
-    val columns = mutableListOf<Int>()
+    val listRows = mutableListOf<Int>()
+    val listColumns = mutableListOf<Int>()
     for (i in 0..matrix.height - 1)
         for (j in 0..matrix.width - 1) {
             if (matrix[i, j] != 0) break
             if (j == matrix.width - 1)
-                rows.add(i)
+                listRows.add(i)
         }
     for (i in 0..matrix.width - 1)
         for (j in 0..matrix.height - 1) {
             if (matrix[j, i] != 0) break
             if (j == matrix.height - 1)
-                columns.add(i)
+                listColumns.add(i)
         }
-    return Holes(rows, columns)
+    return Holes(listRows, listColumns)
 }
 
 /**
@@ -252,11 +252,11 @@ data class Holes(val rows: List<Int>, val columns: List<Int>)
  * К примеру, центральный элемент 12 = 1 + 2 + 4 + 5, элемент в левом нижнем углу 12 = 1 + 4 + 7 и так далее.
  */
 fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
-    val mat = createMatrix(matrix.height + 1, matrix.width + 1, 0)
+    val a = createMatrix(matrix.height + 1, matrix.width + 1, 0)
     for (i in 1..matrix.height)
         for (j in 1..matrix.width) {
-            mat[i, j] = mat[i, j - 1] + mat[i - 1, j] - mat[i - 1, j - 1] + matrix[i - 1, j - 1]
-            matrix[i - 1, j - 1] = mat[i, j]
+            a[i, j] = a[i, j - 1] + a[i - 1, j] - a[i - 1, j - 1] + matrix[i - 1, j - 1]
+            matrix[i - 1, j - 1] = a[i, j]
         }
     return matrix
 }
